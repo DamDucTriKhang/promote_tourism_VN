@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_26_081530) do
+ActiveRecord::Schema.define(version: 2022_05_30_034443) do
 
   create_table "categories", charset: "utf8", force: :cascade do |t|
     t.string "name"
@@ -22,8 +22,7 @@ ActiveRecord::Schema.define(version: 2022_05_26_081530) do
     t.bigint "user_id", null: false
     t.bigint "food_id", null: false
     t.string "comment_content"
-    t.string "inmage"
-    t.integer "ratting"
+    t.integer "rating"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["food_id"], name: "index_comments_on_food_id"
@@ -47,6 +46,12 @@ ActiveRecord::Schema.define(version: 2022_05_26_081530) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["category_id"], name: "index_foods_on_category_id"
+  end
+
+  create_table "microposts", charset: "utf8", force: :cascade do |t|
+    t.string "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "restaurants", charset: "utf8", force: :cascade do |t|
