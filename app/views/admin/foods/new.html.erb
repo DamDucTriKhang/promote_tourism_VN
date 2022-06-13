@@ -1,0 +1,17 @@
+<% provide(:title, 'create food') %>
+<h1>Create food</h1>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for [:admin, @food] do |f| %>
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'form-control' %>
+      <%= f.label :food_content %>
+      <%= f.text_field :food_content, class: 'form-control' %>
+      <%= f.select :category_id, options_for_select(Category.all.map { |category| [category.name, category.id] }) %>
+      <span class="image">
+        <%= f.file_field :image %>
+      </span>
+      <%= f.submit "Create my account", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
