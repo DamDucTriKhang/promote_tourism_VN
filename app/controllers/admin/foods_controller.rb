@@ -1,13 +1,12 @@
-class Admin::FoodsController < ApplicationController
-  # before_action :food_params, only: [:create, :destroy]
+class Admin::FoodsController < Admin::BaseController
+  before_action :food_params, only: [:create]
+  before_action :find_food, only: [:show, :edit, :update]
   
   def index
     @foods = Food.all
   end
 
-  def show
-    @food = Food.find_by(params[:id])
-  end
+  def show; end
   
   def new
     @food = Food.new
@@ -25,18 +24,15 @@ class Admin::FoodsController < ApplicationController
     end
   end
 
-  def edit
-    @food = Food.find_by(params[:id])
-  end
+  def edit; end
 
   def update
-    @food = Food.find_by(params[:id])
     if @food.update(food_params)
-      flash[:success] = "Profile updated"
-      redirect_to admin_food_path
+      flash[:success] = "food updated"
+      redirect_to admin_foods_path
     # Handle a successful update.
     else
-      render 'edit'
+      render :edit
     end
   end
 
@@ -47,6 +43,10 @@ class Admin::FoodsController < ApplicationController
   end
 
   private
+
+  def find_food
+    @food = Food.find_by(id: params[:id])
+  end
 
   def food_params
     params.require(:food).permit(:name, :food_content, :image, :category_id)
@@ -59,8 +59,4 @@ class Admin::FoodsController < ApplicationController
     end
   end
 
-  def correct_admin
-    @user = User.find_(params[:id])
-    redirect_to(root_url) unless current_admin?(@user)
-  end
 end
