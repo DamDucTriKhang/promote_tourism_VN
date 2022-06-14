@@ -79,8 +79,11 @@ ActiveRecord::Schema.define(version: 2022_06_10_031343) do
 
   create_table "microposts", charset: "utf8", force: :cascade do |t|
     t.string "content"
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
+    t.index ["user_id"], name: "index_microposts_on_user_id"
   end
 
   create_table "restaurants", charset: "utf8", force: :cascade do |t|
@@ -109,4 +112,5 @@ ActiveRecord::Schema.define(version: 2022_06_10_031343) do
   add_foreign_key "food_restaurants", "foods"
   add_foreign_key "food_restaurants", "restaurants"
   add_foreign_key "foods", "categories"
+  add_foreign_key "microposts", "users"
 end

@@ -6,4 +6,5 @@
       <%= link_to "delete", admin_user_path(user), method: :delete, data: { confirm: "You sure?" } %>
     </tr>
     <br>
-<% end %>
+  <% end %>
+<%= paginate @users %>

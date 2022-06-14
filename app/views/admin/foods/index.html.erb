@@ -6,7 +6,8 @@
       <td><%= image_tag food.image if food.image.attached?%></td>
       <td><%= link_to 'Show', admin_food_path(food) %></td>
       <td><%= link_to 'Edit', edit_admin_food_path(food) %></td>
-    | <%= link_to "delete", admin_food_path(food), method: :delete, data: { confirm: "You sure?" } %>
+      <%= link_to "delete", admin_food_path(food), method: :delete, data: { confirm: "You sure?" } %>
     </tr>
     <br>
-<% end %>
+  <% end %>
+<%= paginate @foods %>

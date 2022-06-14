@@ -2,6 +2,7 @@ class User < ApplicationRecord
   attr_accessor :remember_token
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.freeze
 
+	has_many :microposts, dependent: :destroy
   has_many :comments
 
   has_secure_password
@@ -43,6 +44,11 @@ class User < ApplicationRecord
     digest = send("#{attribute}_digest")
     return false if digest.nil?
     BCrypt::Password.new(digest).is_password?(token)
+  end
+
+	def feed
+    part_of_feed = "relationships.follower_id = :id or microposts.user_id = :id"
+    Micropost.joins(user: :followers).where(part_of_feed, { id: id })
   end
 
   private
