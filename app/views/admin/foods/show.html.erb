@@ -1,0 +1,10 @@
+<% provide(:title, @food) %>
+<div class="row">
+	<aside class="col-md-4">
+	<h1>
+		<td><%= @food.name %></td>
+    <td><%= @food.food_content %></td>
+    <td><%= image_tag @food.image if @food.image.attached?%></td>
+	</h1>
+	</aside>
+</div>
