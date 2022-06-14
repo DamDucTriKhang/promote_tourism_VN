@@ -1,10 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_users, only: %i[ show edit update destroy ]
-  before_action :admin_user, only: :destroy
+  before_action :set_users, only: %i[ show destroy edit]
 
-  def index
-    @users = User.all
-  end
 
   def new
     @user = User.new
@@ -21,15 +17,24 @@ class UsersController < ApplicationController
     end
   end
 
-  def show; end
+  def show
+    unless @user.id == current_user.id
+      redirect_to root_path
+    end
+  end
 
-  def edit; end
+  def edit
+    unless @user.id == current_user.id
+    else
+      redirect_to root_path
+    end
+  end
 
   def update
-    @user = User.find(params[:id])
+    @user = current_user
     if @user.update(user_params)
       flash[:success] = "User updated!"
-      redirect_to users_url
+      redirect_to root_path
     else
       flash[:danger] = "User no update!"
       render :edit
@@ -57,8 +62,4 @@ class UsersController < ApplicationController
     params.require(:user).permit(:name, :email, :password)
   end
 
-  # Confirms an admin user.
-  def admin_user
-    redirect_to(root_url) unless current_user.admin?
-  end
 end
