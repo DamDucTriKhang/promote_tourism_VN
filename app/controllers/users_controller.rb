@@ -27,6 +27,7 @@ class UsersController < ApplicationController
 
   def edit
     unless @user.id == current_user.id
+      flash[:danger] = "You do not have access"
       redirect_to root_path
     end
   end
