@@ -1,54 +1,37 @@
 class MicropostsController < ApplicationController
-  before_action :set_micropost, only: %i[ show edit update destroy ]
+  before_action :logged_in_user, only: [:create, :destroy]
+  before_action :correct_user,only: :destroy
 
   def index
     @microposts = Micropost.all
   end
 
-  def new
-    @micropost = Micropost.new
-  end
-
-  def edit; end
-
-  def show; end
-
-  def update
-    if @micropost.update(micropost_params)
-      flash[:success] = "Micropost updated!"
-      redirect_to microposts_url
-    else
-      flash[:danger] = "Micropost no updated!"
-      render :edit
-    end
-  end
-
   def create
-    @micropost = Micropost.new(micropost_params)
+    @micropost = current_user.microposts.build(micropost_params)
+    @micropost.image.attach(params[:micropost][:image])
     if @micropost.save
       flash[:success] = "Micropost created!"
-      redirect_to microposts_url
+      redirect_to root_url
     else
-      # flash là mảng có dạng hash[key;velua], trong trường hợp này key:danger còn velua:"Micropost no created!"
-      flash[:danger] = "Micropost no created!"
-      render :new
+      @feed_items = current_user.feed.paginate(page: params[:page])
+      render :home
     end
   end
 
   def destroy
     @micropost.destroy
     flash[:success] = "Micropost deleted"
-    redirect_to microposts_url
+    redirect_to request.referrer || root_url
   end
 
   private
 
-  def set_micropost
-    @micropost = Micropost.find(params[:id])
+  def micropost_params
+    params.require(:micropost).permit(:content, :image)
   end
 
-  def micropost_params
-    params.require(:micropost).permit(:content)
+  def correct_user
+    @micropost = current_user.microposts.find_by(id: params[:id])
+    redirect_to root_url if @micropost.nil?
   end
-  
 end

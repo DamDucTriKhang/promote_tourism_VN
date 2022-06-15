@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
-  before_action :set_users, only: %i[ show destroy edit]
+  before_action :set_users, only: %i[show destroy edit]
 
+
+  def index
+    @users = User.all.page(params[:page]).per(5)
+  end
 
   def new
     @user = User.new
@@ -16,16 +20,13 @@ class UsersController < ApplicationController
       render :new
     end
   end
-
-  def show
-    unless @user.id == current_user.id
-      redirect_to root_path
-    end
+# byebug
+  def show # cho xem các bài post của user
+    @microposts = @user.microposts.page(params[:page]).per(5)
   end
 
   def edit
     unless @user.id == current_user.id
-    else
       redirect_to root_path
     end
   end

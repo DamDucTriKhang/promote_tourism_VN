@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
   get '/signup', to: 'users#new'
   resources :microposts
-  resources :users , except: [:index]
+  resources :users
   namespace :admin do
     resources :foods
     resources :users
