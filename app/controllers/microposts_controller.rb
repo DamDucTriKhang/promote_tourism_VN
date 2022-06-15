@@ -12,23 +12,27 @@ class MicropostsController < ApplicationController
     @micropost.image.attach(params[:micropost][:image])
     if @micropost.save
       flash[:success] = "Micropost created!"
-      redirect_to root_url
+      redirect_to user_path(current_user)
     else
-      @feed_items = current_user.feed.paginate(page: params[:page])
-      render :home
+      @feed_items = current_user.feed.page(params[:page])
+      flash[:danger] = "Micropost create fail"
+      redirect_to root_path
     end
   end
 
   def edit
+    unless @micropost.user.id == current_user.id
+      flash[:danger] = "You do not have access"
+      redirect_to root_path
+    end
   end
 
   def update
-    user = User.find_by_id(params[:micropost][:user_id])
     if @micropost.update(micropost_params)
       flash[:success] = "micropost updated!"
-      redirect_to user_path(user)
+      redirect_to user_path(current_user)
     else
-      flash[:danger] = "micropost no update!"
+      flash[:danger] = "Micropost update fail"
       render :edit
     end
   end
