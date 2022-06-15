@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
       if current_user.admin == true
         redirect_to admin_foods_path(user)
       else
-        redirect_to users_path
+        redirect_to user_path(user)
       end
     else
       flash.now[:danger] = 'Invalid email/password combination'
