@@ -1,13 +1,19 @@
 <% provide(:title, 'All food') %>
-  <% @foods.each do |food| %>
-    <tr>
-      <td><%= food.name %></td>
-      <td><%= food.food_content %></td>
-      <td><%= image_tag food.image if food.image.attached?%></td>
-      <td><%= link_to 'Show', admin_food_path(food) %></td>
-      <td><%= link_to 'Edit', edit_admin_food_path(food) %></td>
-      <%= link_to "delete", admin_food_path(food), method: :delete, data: { confirm: "You sure?" } %>
-    </tr>
-    <br>
+  <%= form_tag admin_foods_path, method: :get  do %>
+    <%= text_field_tag :search, params[:search]%>
+    <%= submit_tag "Search", :name => nil%>
   <% end %>
+  <div>
+    <% @foods.each do |food| %>
+      <tr>
+        <td><%= food.name %></td>
+        <td><%= food.food_content %></td>
+        <td><%= image_tag food.image if food.image.attached?%></td>
+        <td><%= link_to 'Show', admin_food_path(food) %></td>
+        <td><%= link_to 'Edit', edit_admin_food_path(food) %></td>
+        <%= link_to "delete", admin_food_path(food), method: :delete, data: { confirm: "You sure?" } %>
+      </tr>
+      <br>
+    <% end %>
+  </div>
 <%= paginate @foods %>
