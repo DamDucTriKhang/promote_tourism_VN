@@ -4,4 +4,7 @@ class Food < ApplicationRecord
   has_many :food_restaurants
   has_many :restaurants, through: :food_restaurant
   has_one_attached :image
+
+  scope :search, ->(name){where "name LIKE ?", "%#{name}%"}
+
 end

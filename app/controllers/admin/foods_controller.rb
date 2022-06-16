@@ -3,7 +3,9 @@ class Admin::FoodsController < Admin::BaseController
   before_action :find_food, only: [:show, :edit, :update]
   
   def index
-    @foods = Food.all.page(params[:page]).per(5)
+    @foods = Food.search(params[:search])
+    @foods = @foods.page(params[:page]).per(5)
+    # @foods = @foods.search(params[:search])
   end
 
   def show; end
